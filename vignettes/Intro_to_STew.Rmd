@@ -1,0 +1,191 @@
+---
+title: "Intro_to_STew"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro_to_STew}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+This vignette outlines the steps of analysis and visualization of shared variations underlying sing-cell spatial transcriptomics for **10X Genomics Visium human dorsolateral perfrontal cortex (DLPFC) using STew**.
+
+## Load required libraries
+```{r warning = FALSE, message = FALSE}
+library(STew)
+library(ggpointdensity)
+library(ggpubr)
+library(viridis)
+```
+
+# Part I: Data input, processing and initialization of STew object
+STew requires two user inputs: 
+
+* **Gene expression data of cells**: a count matrix of single-cell gene expression in which genes in rows with row names and cells in columns with column names. 
+* **Spatial location of cells**: a data matrix in which each row gives the spatial coordinates of each cell or spot.
+
+The spatial transcriptomics data in **six-layered human dorsolateral perfrontal cortex (DLPFC) obtained from 10X Genomics Visium platform is available in STew package**.
+
+
+## Load data
+```{r}
+# Here we load the human DLPFC data from STew 
+data("dlpfc")
+```
+
+## Create a STew object 
+**USER can create a new STew object from data matrix or data frame.** USER can assign a count matrix of gene expression data as `count` and a meta data frame of cell spatial information as `spatial`.
+```{r}
+STew = STew_Obj(count = dlpfc$count_exp,
+                  spatial = dlpfc$spatial)
+```
+
+## Preprocessing the gene expression data for STew analysis 
+To remove unwanted variation and stabilize the variance across the gene expression matrix, we use regularized negative binomial regression model to **normalize the gene expression data**. 
+
+We also provide a function to select highly variable genes (HVG) that tend to carry the most significant biological information, while reducing the dimensionality of the data. USER can define the number of highly variable genes as needed. 
+
+```{r}
+# To normalize the gene expression data
+STew <- sct(STew) 
+```
+
+```{r, fig.width = 4, fig.height = 3}
+# Some steps for selecting highly variable genes as needed
+# Calculate row means and standard deviations for genes using normalized gene expression matrix
+STew <- var_genes(STew)
+
+# Visualization of 'mean versus standard deviation', helping to set a cutoff selecting highly variable genes
+ggplot(STew$hvg, aes(mean, stddev)) + ylim(0.5,2) +
+         geom_point(size = 1) +
+         scale_color_viridis() +
+         theme_bw(base_size = 20) +
+         theme(legend.position="none")
+
+# Setting USER defined cutoff to obtain HVG, e.g. genes with mean > 0.25 or stddev > 1.25
+hvg_list <- STew$hvg[STew$hvg$mean > 0.25 | STew$hvg$stddev > 1.25, ] # save selected genes as hvg_list 
+
+# Subset `count_exp` by hvg_list. USER may subset `count_exp` using user-defined HVG.
+STew$count_exp <- STew$count_exp[hvg_list$symbol,]
+```
+
+# Part II: Analysis of single-cell spatial transcriptomics data by STew
+
+## Compute spatial-driven cell adjacency matrix
+STew characterizes cell-cell adjacency relationships by assigning a binary values (0 or 1) to each cell pair, resulting in a cell adjacency matrix informed by spatial information. 
+
+```{r}
+STew <- spatial_adjacency_matrix(STew) 
+```
+
+## Compute spatially aggregated genes 
+STew identifies spatially auto-correlated genes using the spatial-driven cell adjacency matrix.
+
+* **Spatially auto-correlated genes** are genes whose expression levels show a pattern related to the spatial organization of the cells or tissues they are found in. In simple terms, the expression of these genes is not random across a tissue, but rather shows a specific pattern based on the location of the cells. This means that the expression of a spatially auto-correlated gene in one cell is similar to the expression in neighboring cells, and this similarity decreases as the distance between cells increases. Regarding this, we modify the adapt the function from MERINGUE.
+
+```{r}
+STew <- autocorrelated_genes(obj = STew)
+
+```
+
+## Compute expression-driven cell adjacency matrix
+STew computes expression-driven distance matrix using the autocorrelated genes. By building up a K-nearest neighbors graph (K-NNG), STew computes the expression-driven cell adjacency matrix. 
+
+In `expression_adjacency_matrix`, we provide an option for creating weight or non-weight KNN graph based on distance matrix, by setting `weight`. We also provide option of `weighted` to specify whether to create a weighted adjacency matrix based on KNN graph.
+
+USER may need to adjust the parameter `nk` to change the number of nearest neighbors to consider when constructing the graph. 
+```{r}
+STew = expression_adjacency_matrix(obj = STew, nk = 200, weight=TRUE, mode = "undirected", weighted = FALSE) # 3639 cells x 3639 cells
+```
+
+## Perform permutation-based Sparse canonical correlation analysis 
+* **Permute optimal penalty parameters**: STew computes the optimal penalty parameters for the spatial-driven cell adjacency matrix and the gene expression-driven adjacency matrix by parallel permutation test. The optimal penalty parameters are selected when "pvalue < 0.05" through cross-validation, which means none of the permutation results are significantly larger than the observed canonical correlations.
+
+* **Set USER-defined penalty parameters**: In addition to set penalty parameter based on permutation test results, USER can define different penalty parameters for `exp_adj_matrix` and `adj_matrix` in `x` and `z` , respectively. 
+
+```{r}
+# permute optimal penalty parameter
+STew <- parallel_cca_permute(x = STew$exp_adj_matrix, z = STew$adj_matrix, obj = STew, nperms=50, niter=3)
+
+STew$bestpenaltyx # lambda 1 = 0.65
+STew$bestpenaltyz # lambda 2 = 0.65
+```
+
+```{r message=FALSE}
+# Using the optimal penalty parameters to run sparse CCA
+# We further evaluated our next cluster results later by comparing with the manual labels, which led to ARI 0.52.
+STew <- cca_main(x = STew$exp_adj_matrix, z = STew$adj_matrix, obj = STew, K=20, penaltyx=STew$bestpenaltyx, penaltyz=STew$bestpenaltyz, v=STew$v.init)
+```
+
+# Part III: Visualization of shared variations captured by STew
+Upon capturing shared variation between gene expression and cell spatial information, STew provides functions for further data analysis and visualization.
+
+**Visualization of canonical correlations**
+```{r, fig.dim = c(3,3), fig.height = 3, fig.width = 4.5, fig.align = 'center'}
+bar_stew <- plot_corr(STew$optimal_cca, t="Canonical correlations")
+bar_stew
+```
+
+**Extract spatially informed canonical loading**
+```{r}
+STew <- joint_embedding(STew) 
+```
+
+**Visualization of spatially informed cell gradient plot**
+```{r message = FALSE, fig.width=20, fig.height=5, fig.align='center'}
+gradient_plot <- spatial_gradient(STew) # visualize some stews
+ggarrange(gradient_plot[[1]] + theme(legend.position = 'bottom', axis.ticks = element_blank(),axis.text = element_blank()), 
+          gradient_plot[[2]] + theme(legend.position = 'bottom', axis.ticks = element_blank(),axis.text = element_blank()), 
+          gradient_plot[[6]] + theme(legend.position = 'bottom', axis.ticks = element_blank(),axis.text = element_blank()), 
+          gradient_plot[[7]] + theme(legend.position = 'bottom', axis.ticks = element_blank(),axis.text = element_blank()), nrow = 1, ncol = 4)
+
+```
+
+**Cell type clustering**
+```{r}
+STew <- BuildSNNSeurat(obj = STew, 
+                        k.param = 30, 
+                        prune.SNN = 1/15, 
+                        nn.eps = 0.5, 
+                        cols = c(1,2,3,4,6,7,8,10,11,12,14,16))
+
+# cluster cell types using USER-defined resolutions
+resolution_list <- c(0.2, 0.3, 0.4, 0.5, 0.6)
+
+# find clusters of cell types 
+STew <- FindClusters(resolution_list, STew)
+length(table(STew$clusters$res_0.30)) # 7 clusters when resolution is 0.30
+```
+
+```{r}
+# pick some colors for the clusters
+colors <- c("0" = "#FFF2AE", "1" = "#d9f0a3","2" = "#78c679","3" = "#41ab5d","4" = "#238b45","5" = "#005824","6" = "#525252")
+
+# make new cluster labels to show gradient layers 
+labels <-  STew$clusters %>% 
+    mutate(res_0.30 = case_when(
+        res_0.30 == 0 ~ '4',
+        res_0.30 == 1 ~ '2',
+        res_0.30 == 2 ~ '5',
+        res_0.30 == 3 ~ '3',
+        res_0.30 == 4 ~ '0',
+        res_0.30 == 5 ~ '1',
+        res_0.30 == 6 ~ '6'
+    )) %>% select(res_0.30)
+
+# visualize cell type clusters of human DLPFC data
+spatial_coordinate <- dlpfc$spatial %>% mutate(
+                                  imagerows = -imagerow) %>% select(imagerows, imagecol)
+```
+
+```{r, fig.width=3, fig.height=2, fig.align = 'center'}
+cluster_plot <- plot_cluster(coordis = spatial_coordinate,label = labels$res_0.30, colors = colors, t="Cell clusters based on STew") + theme(legend.position = 'right')
+cluster_plot
+```
+
+# Part IV: Save the STew object
+```{r}
+saveRDS(STew, file="STew_10x_human_dlpfc.rds")
+```
+
+```{r}
+str(STew)
+```
