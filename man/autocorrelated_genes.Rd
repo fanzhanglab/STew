@@ -14,7 +14,7 @@ autocorrelated_genes(
 )
 }
 \arguments{
-\item{obj}{stCCA S3 Object}
+\item{obj}{STew S3 Object}
 
 \item{alternative}{a character string specifying the alternative hypothesis, chosen from one of "greater", "two-sided" or "less". Default is "greater"}
 

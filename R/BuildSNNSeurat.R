@@ -5,7 +5,7 @@
 #' @param k.param  Maximum number of nearest neighbors to compute. Default - 30.
 #' @param prune.SNN Sets the cutoff for acceptable Jaccard index when computing the neighborhood overlap for the SNN construction. Any edges with values less than or equal to this will be set to 0 and removed from the SNN graph. Essentially sets the stringency of pruning (0 --- no pruning, 1 --- prune everything). Default - 1/15.
 #' @param nn.eps Error bound: default of 0.0 implies exact nearest neighbor search
-#' @param obj stCCA S3 Object
+#' @param obj STew S3 Object
 #' @param cols columns selected
 #'
 #' @export

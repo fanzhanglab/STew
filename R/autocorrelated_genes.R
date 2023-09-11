@@ -7,7 +7,7 @@
 #' @param alpha P-value threshold for LISA score to be considered significant
 #' @param minPercentCells Minimum percent of cells that must be driving spatial pattern
 #' @param verbose A logical parameter that controls the amount of output or information displayed during the execution of the function. When verbose = TRUE, the function will provide more detailed and informative output during its execution and when verbose = FALSE (default setting), the function will produce minimal output.
-#' @param obj stCCA S3 Object
+#' @param obj STew S3 Object
 #'
 #' @return Subset regularized gene expression matrix by filtered genes
 #' @export
