@@ -31,14 +31,11 @@ Imports:
     sctransform,
     MERINGUE,
     Seurat,
-    viridis
-Suggests: knitr,
-    rmarkdown,
-    ggpointdensity,
-    princurve,
+    viridis,
     data.table,
     parallel,
     MASS,
+    princurve,
     lme4,
     lmtest,
     pscl,
@@ -49,6 +46,9 @@ Suggests: knitr,
     stats,
     methods,
     parameters
+Suggests: knitr,
+    rmarkdown,
+    ggpointdensity,
 LazyData: true
 LazyDataCompression: xz
 VignetteBuilder: knitr
