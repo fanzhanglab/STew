@@ -9,17 +9,17 @@
 #'
 #' @import sctransform
 #'
-sct <- function(obj, n_genes = 2000) {
+sct = function (obj, n_genes = 2000)
+{
   umi <- obj$count_exp
   original_colnames <- colnames(umi)
   original_rownames <- rownames(umi)
-  umi = umi %>% as.matrix()
-  colnames(umi) = original_colnames
-  rownames(umi) = original_rownames
+  umi = umi %>% as.matrix() %>% t()
 
+  colnames(umi) = original_rownames
+  rownames(umi) = original_colnames
   sct_count = sctransform::vst(umi, n_genes = n_genes, verbosity = 1)$y
   sct_count <- as.matrix(sct_count)
   obj$count_exp <- sct_count
   return(obj)
-
 }
