@@ -11,14 +11,14 @@
 #'
 #'@import loe
 #'Matrix
-expression_adjacency_matrix <- function(obj, nk = 200, symm = FALSE, weight = TRUE, mode = "undirected", weighted = TRUE) {
+expression_adjacency_matrix <- function(obj, nk = 200, symm = FALSE, weight = TRUE, mode = "undirected", weighted = FALSE) {
   # Calculate the Euclidean distance between each pair of cells using the gene expression matrix
   mat <- t(obj$count_exp)
   distance <- dist(mat, method = "euclidean")
   distance <- as.matrix(distance)
 
   # Make a K-NN graph based on the Euclidean distance
-  knn_matrix <- make.kNNG(distance, k = nk, symm = symm, weight = FALSE)
+  knn_matrix <- make.kNNG(distance, k = nk, symm = symm, weight = TRUE)
 
   # Convert K-NN neighbor relation matrix to adjacency matrix
   n <- dim(knn_matrix)[1]

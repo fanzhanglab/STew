@@ -10,7 +10,7 @@ expression_adjacency_matrix(
   symm = FALSE,
   weight = TRUE,
   mode = "undirected",
-  weighted = TRUE
+  weighted = FALSE
 )
 }
 \arguments{
