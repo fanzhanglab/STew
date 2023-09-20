@@ -4,6 +4,7 @@
 #'
 #' @param n_genes Number of genes
 #' @param obj stCCA S3 Object
+#' @param transpose Boolean of Matrix transpose
 #'
 #' @export
 #'

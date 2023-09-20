@@ -4,12 +4,14 @@
 \alias{sct}
 \title{sct()}
 \usage{
-sct(obj, n_genes = 2000)
+sct(obj, n_genes = 2000, transpose = FALSE)
 }
 \arguments{
 \item{obj}{stCCA S3 Object}
 
 \item{n_genes}{Number of genes}
+
+\item{transpose}{Boolean of Matrix transpose}
 }
 \description{
 Apply variance stabilizing transformation to UMI count data using a regularized Negative Binomial regression model. This will remove unwanted effects from UMI data
