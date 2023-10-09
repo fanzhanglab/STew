@@ -67,7 +67,7 @@ remotes::install_github("fanzhanglab/STew")
 **Step-by-step notebook** of applying STew on identifying spatially informed low-dimensional embeddings and spatially aware clusters on the 10X Visium Human Brain Data (DLPFC):
 
 - <a href="https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/Tutorial_STew_DLPFC.html"> Tutorial of applying STew on DLPFC data </a>
-- <a href = 'https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/count_modeling_tutorial_dlfcp.nb.html'> Tutorial of count data modelling </a>
+- <a href = 'https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/count_modeling_tutorial_dlpfc.html'> Tutorial of count data modelling </a>
 
 <br/>
 
