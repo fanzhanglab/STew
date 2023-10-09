@@ -9,7 +9,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p align="justify">
-We introduce STew, a Spatial Transcriptomic multi-viEW representation
+We introduce STew, a **S**patial **T**ranscriptomic multi-vi**EW** representation
 learning method, or STew, to jointly characterize the gene expression
 variation and spatial information in the shared low-dimenion space in a
 scalable manner. STew will output distinct spatially informed cell
