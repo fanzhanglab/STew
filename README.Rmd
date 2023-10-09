@@ -21,8 +21,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 <p align = "justify">
-We introduce STew, a multi-view representation learning method for
-spatial transcriptomic data, to jointly characterize the gene expression variation and spatial information in the shared low-dimenion space in a scalable manner. STew will output distinct spatially informed cell gradients, robust clusters, and statistical goodness of model fit to reveal significant genes that reflect subtle spatial niches in complex tissues.
+We introduce STew, a Spatial Transcriptomic multi-viEW representation learning method, or STew, to jointly characterize the gene expression variation and spatial information in the shared low-dimenion space in a scalable manner. STew will output distinct spatially informed cell gradients, robust clusters, and statistical goodness of model fit to reveal significant genes that reflect subtle spatial niches in complex tissues.
 </p>
 
 
