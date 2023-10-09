@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# STew <img width="32%" align = "right" src="https://github.com/fanzhanglab/STew/blob/main/STewlogo.png">
+# STew <img width="28%" align = "right" src="https://github.com/fanzhanglab/STew/blob/main/STewlogo.png">
 
 [![R-CMD-check](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml)
 ![](https://komarev.com/ghpvc/?username=fanzhanglab&style=flat-square&color=green)
@@ -9,13 +9,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p align="justify">
-We introduce STew, a Spatial Transcriptomic multi-viEW representation
-learning method, or STew, to jointly characterize the gene expression
-variation and spatial information in the shared low-dimenion space in a
-scalable manner. STew will output distinct spatially informed cell
-gradients, robust clusters, and statistical goodness of model fit to
-reveal significant genes that reflect subtle spatial niches in complex
-tissues.
+We introduce STew, a <strong>S</strong>patial
+<strong>T</strong>ranscriptomic multi-vi<strong>EW</strong>
+representation learning method, or STew, to jointly characterize the
+gene expression variation and spatial information in the shared
+low-dimenion space in a scalable manner. STew will output distinct
+spatially informed cell gradients, robust clusters, and statistical
+goodness of model fit to reveal significant genes that reflect subtle
+spatial niches in complex tissues.
 </p>
 
 <img width="100%" align = "center" src="https://github.com/fanzhanglab/STew/blob/main/man/figures/Figure1.png">
