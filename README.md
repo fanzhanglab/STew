@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# STew <img width="43%" align = "right" src="https://github.com/fanzhanglab/STew/blob/main/STewlogo.png">
+# STew <img width="32%" align = "right" src="https://github.com/fanzhanglab/STew/blob/main/STewlogo.png">
 
 [![R-CMD-check](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml)
 ![](https://komarev.com/ghpvc/?username=fanzhanglab&style=flat-square&color=green)
@@ -65,7 +65,7 @@ informed low-dimensional embeddings and spatially aware clusters on the
 
 - <a href="https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/Tutorial_STew_DLPFC.html">
   Tutorial of applying STew on DLPFC data </a>
-- <a href = 'https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/count_modeling_tutorial_dlfcp.nb.html'>
+- <a href = 'https://htmlpreview.github.io/?https://github.com/fanzhanglab/STew/blob/main/vignettes/count_modeling_tutorial_dlpfc.html'>
   Tutorial of count data modelling </a>
 
 <br/>
