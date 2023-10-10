@@ -4,7 +4,7 @@
 # STew <img width="28%" align = "right" src="https://github.com/fanzhanglab/STew/blob/main/STewlogo.png">
 
 [![R-CMD-check](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/fanzhanglab/STew/actions/workflows/check-standard.yaml)
-![](https://komarev.com/ghpvc/?username=fanzhanglab&style=flat-square&color=green)
+![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Ffanzhanglab%2FSTew&label=%23Visits&labelColor=%23000000&countColor=%2337d67a&style=plastic)
 
 <!-- badges: start -->
 <!-- badges: end -->
