@@ -44,9 +44,24 @@ expression_adjacency_matrix <- function(obj, nk = 200, symm = FALSE, weight = TR
     knn_adjacency[knn_adjacency != 0] <- 1
   }
 
-  knn_adjacency <- Matrix(knn_adjacency, sparse = TRUE)
-  rownames(knn_adjacency) <- rownames(mat)
-  colnames(knn_adjacency) <- rownames(mat)
-  obj$exp_adj_matrix <- knn_adjacency
+  nsplit = 10
+
+  # Splitting the matrix
+  split_indices = cut(1:nrow(knn_adjacency), nsplit, labels = FALSE)
+
+  # Convert each part to a sparse matrix
+  sparseMxList = lapply(1:nsplit, function(i) {
+    sub_matrix = knn_adjacency[split_indices == i, ]
+    Matrix(as.matrix(sub_matrix), sparse = TRUE)
+  })
+
+  # Combine the list of sparse matrices into one
+  sparse.M = Reduce(function(x, y) rbind(x, y), sparseMxList)
+
+  # Set row and column names
+  rownames(sparse.M) <- rownames(mat)
+  colnames(sparse.M) <- rownames(mat)
+
+  obj$exp_adj_matrix <- sparse.M
   return(obj)
 }
