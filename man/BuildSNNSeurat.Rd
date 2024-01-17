@@ -7,7 +7,7 @@
 BuildSNNSeurat(obj, k.param = 30, prune.SNN = 1/15, nn.eps = 0, cols = NULL)
 }
 \arguments{
-\item{obj}{STew S3 Object}
+\item{obj}{stCCA S3 Object}
 
 \item{k.param}{Maximum number of nearest neighbors to compute. Default - 30.}
 

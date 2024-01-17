@@ -24,7 +24,6 @@
 #' future.apply
 #' princurve
 #' tidyverse
-#' Seurat
 #' data.table
 #' parallel
 #' MASS

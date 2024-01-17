@@ -93,7 +93,7 @@ In `expression_adjacency_matrix`, we provide an option for creating weight or no
 
 USER may need to adjust the parameter `nk` to change the number of nearest neighbors to consider when constructing the graph. 
 ```{r}
-STew = expression_adjacency_matrix(obj = STew, nk = 200, weight=TRUE, mode = "undirected", weighted = FALSE) # 3639 cells x 3639 cells
+STew <- expression_adjacency_matrix(obj = STew, nk = 200, weight=TRUE, mode = "undirected", weighted = FALSE) # 3639 cells x 3639 cells
 ```
 
 ## Perform permutation-based Sparse canonical correlation analysis 
@@ -155,6 +155,8 @@ STew <- FindClusters(resolution_list, STew)
 length(table(STew$clusters$res_0.30)) # 7 clusters when resolution is 0.30
 ```
 
+
+
 ```{r}
 # pick some colors for the clusters
 colors <- c("0" = "#FFF2AE", "1" = "#d9f0a3","2" = "#78c679","3" = "#41ab5d","4" = "#238b45","5" = "#005824","6" = "#525252")
@@ -176,15 +178,18 @@ spatial_coordinate <- dlpfc$spatial %>% mutate(
                                   imagerows = -imagerow) %>% select(imagerows, imagecol)
 ```
 
+
 ```{r, fig.width=3, fig.height=2, fig.align = 'center'}
 cluster_plot <- plot_cluster(coordis = spatial_coordinate,label = labels$res_0.30, colors = colors, t="Cell clusters based on STew") + theme(legend.position = 'right')
 cluster_plot
 ```
 
+
 # Part IV: Save the STew object
 ```{r}
 saveRDS(STew, file="STew_10x_human_dlpfc.rds")
 ```
+
 
 ```{r}
 str(STew)

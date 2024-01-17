@@ -1,5 +1,8 @@
 BinarySearch <- function(argu,sumabs){
-  if(l2n(argu)==0 || sum(abs(argu/l2n(argu)))<=sumabs) return(0)
+  if (length(sumabs) == 0) {
+    sumabs <- 0
+  }
+  if(l2n(argu)==0 || sum(abs(argu/l2n(argu)))<= sumabs) return(0)
   lam1 <- 0
   lam2 <- max(abs(argu))-1e-5
   iter <- 1

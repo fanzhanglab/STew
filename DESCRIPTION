@@ -1,6 +1,6 @@
 Package: STew
 Title: STew
-Version: 2.0
+Version: 2.1
 Author: Nanxi Guo, Juan Vargas, Douglas Fritz, Revanth Krishna, Fan Zhang (University of Colorado Anschutz)
 Maintainer: Revanth Krishna <revanth.krishna@cuanschutz.edu>
 Correspondance: Fan Zhang <fan.3.zhang@cuanschutz.edu>
@@ -15,7 +15,7 @@ BugReports: https://github.com/fanzhanglab/STew/issues
 Depends: 
     R (>= 4.0),
     ggplot2 (>= 3.4),
-    tidyverse
+    tidyverse,
 Remotes:
     JEFworks-Lab/MERINGUE,
     satijalab/Seurat
@@ -48,7 +48,7 @@ Imports:
     parameters
 Suggests: knitr,
     rmarkdown,
-    ggpointdensity,
+    ggpointdensity
 LazyData: true
 LazyDataCompression: xz
 VignetteBuilder: knitr

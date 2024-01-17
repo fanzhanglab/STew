@@ -2,7 +2,6 @@ library(future)
 library(future.apply)
 library(princurve)
 library(tidyverse)
-library(Seurat)
 library(data.table)
 library(parallel)
 library(MASS)
@@ -527,21 +526,44 @@ count_model_main <- function(x,
 
 
   if (log_plot == TRUE) {
-    glmout <- NULL
-    lmeout <- NULL
-    zeroout <- NULL
-    zero_neg_out <- NULL
-    neg_bin_out <- NULL
-    hurdle_mod_out <- NULL
-    qua_mod_out <- NULL
-    gene  = tibble(Gene = x)
+    num_rows <- nrow(sub_matrix[,x] )
+    glmout <- lmeout <- zeroout <- zero_neg_out <- neg_bin_out <- hurdle_mod_out <- qua_mod_out <- NULL
+
+    if ("GLM" %in% models) {
+      glmout <- data.frame(glm_pred = rep(NA, num_rows))
+    }
+
+    if ("LME" %in% models) {
+      lmeout <- data.frame(lme_pred = rep(NA, num_rows))
+    }
+
+    if ("ZeroInflated" %in% models) {
+      zeroout <- data.frame(zero_mod_pred = rep(NA, num_rows))
+    }
+
+    if ("ZeroInflNegBinomial" %in% models) {
+      zero_neg_out <- data.frame(zero_neg_pred = rep(NA, num_rows))
+    }
+
+    if ("NegativeBinomial" %in% models) {
+      neg_bin_out <- data.frame(nb_pred = rep(NA, num_rows))
+    }
+
+    if ("Hurdle" %in% models) {
+      hurdle_mod_out <- data.frame(hurdle_pred = rep(NA, num_rows))
+    }
+
+    if ("Quasipoisson" %in% models) {
+      qua_mod_out <- data.frame(qua_pred = rep(NA, num_rows))
+    }
+    gene  = data.frame(Gene = x)
 
     if ("GLM" %in% models) {
       glmout = NULL
 
-      tryCatch({glmout <- tibble(glm_pred = predict(mod, type = 'response'))
+      tryCatch({glmout <- data.frame(glm_pred = stats::predict(mod, type = 'response'))
       }, error = function(e){
-        glmout <- tibble(glm_pred = 'error')
+        glmout <- data.frame(glm_pred = 'error')
       })
     }
 
@@ -549,9 +571,9 @@ count_model_main <- function(x,
       lmeout <- NULL
 
       tryCatch({
-        lmeout <- tibble(lme_pred = predict(lme_mod, type = 'response'))
+        lmeout <- data.frame(lme_pred = predict(lme_mod, type = 'response'))
       }, error = function(e) {
-        lmeout <- tibble(lme_pred = 'error')
+        lmeout <- data.frame(lme_pred = 'error')
       })
     }
 
@@ -559,9 +581,9 @@ count_model_main <- function(x,
       zeroout <- NULL
 
       tryCatch({
-        zeroout <- tibble(zero_mod_pred = predict(zero_mod, type = 'response'))
+        zeroout <- data.frame(zero_mod_pred = predict(zero_mod, type = 'response'))
       }, error = function(e) {
-        zeroout <- tibble(zero_mod_pred = 'error')
+        zeroout <- data.frame(zero_mod_pred = 'error')
       })
     }
 
@@ -569,9 +591,9 @@ count_model_main <- function(x,
       zero_neg_out <- NULL
 
       tryCatch({
-        zero_neg_out <- tibble(zero_neg_pred = predict(zero_neg, type = 'response'))
+        zero_neg_out <- data.frame(zero_neg_pred = predict(zero_neg, type = 'response'))
       }, error = function(e) {
-        zero_neg_out <- tibble(zero_neg_pred = 'error')
+        zero_neg_out <- data.frame(zero_neg_pred = 'error')
       })
     }
 
@@ -579,9 +601,9 @@ count_model_main <- function(x,
       neg_bin_out <- NULL
 
       tryCatch({
-        neg_bin_out <- tibble(nb_pred = predict(nb, type = 'response'))
+        neg_bin_out <- data.frame(nb_pred = predict(nb, type = 'response'))
       }, error = function(e) {
-        neg_bin_out <- tibble(nb_pred = 'error')
+        neg_bin_out <- data.frame(nb_pred = 'error')
       })
     }
 
@@ -589,25 +611,25 @@ count_model_main <- function(x,
       hurdle_mod_out <- NULL
 
       tryCatch({
-        hurdle_mod_out <- tibble(hurdle_pred = predict(hurdle_mod, type = 'response'))
+        hurdle_mod_out <- data.frame(hurdle_pred = predict(hurdle_mod, type = 'response'))
       }, error = function(e) {
-        hurdle_mod_out <- tibble(hurdle_pred = 'error')
+        hurdle_mod_out <- data.frame(hurdle_pred = 'error')
       })
     }
 
     if ("Quasipoisson" %in% models) {
-      qua_mod_out <- tibble(qua_pred = predict(qua, type = 'response'))
+      qua_mod_out <- data.frame(qua_pred = predict(qua, type = 'response'))
     }
 
-    return(bind_cols(
+    return(dplyr::bind_cols(
       gene,
-      glmout,
-      lmeout,
-      zeroout,
-      zero_neg_out,
-      neg_bin_out,
-      hurdle_mod_out,
-      qua_mod_out
+      glmout %||% NULL,
+      lmeout %||% NULL,
+      zeroout %||% NULL,
+      zero_neg_out %||% NULL,
+      neg_bin_out %||% NULL,
+      hurdle_mod_out %||% NULL,
+      qua_mod_out %||% NULL
     ))
   }
 

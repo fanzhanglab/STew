@@ -10,8 +10,6 @@
 #' @import MERINGUE
 spatial_adjacency_matrix <- function(obj) {
 
-
-
   coordinate <- as.data.frame(obj$spatial)
   adjacency_matrix <- getSpatialNeighbors(coordinate)
   rownames(adjacency_matrix) <- rownames(coordinate)

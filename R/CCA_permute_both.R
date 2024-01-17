@@ -6,8 +6,36 @@ CCA.permute.both=
         set.seed(seed)
         call <- match.call()
         if(standardize){
-            x <- scale(x,TRUE,TRUE)
-            z <- scale(z,TRUE,TRUE)
+            # x <- scale(x,TRUE,TRUE)
+          plan(multisession)
+          x@x <- x@x / rep.int(colSums(x), diff(x@p))
+          # Scaling for dense matrix 'z' in parallel
+
+
+
+          nsplit = 10
+
+          # Splitting the matrix
+          split_indices = cut(1:nrow(z), nsplit, labels = FALSE)
+
+          # Convert each part to a sparse matrix
+          sparseMxList = lapply(1:nsplit, function(i) {
+            sub_matrix = z[split_indices == i, ]
+            Matrix(as.matrix(sub_matrix), sparse = TRUE)
+          })
+
+          # Combine the list of sparse matrices into one
+          sparse.M = Reduce(function(x, y) rbind(x, y), sparseMxList)
+
+          # Set row and column names
+          rownames(sparse.M) <- rownames(z)
+          colnames(sparse.M) <- rownames(z)
+
+          z <- sparse.M
+
+          z@x <- z@x / rep.int(colSums(z), diff(z@p))
+
+
         }
         v <- CheckVs(v,x,z,1)
         ccperms=nnonzerous.perms=nnonzerovs.perms=matrix(NA, length(penaltyxs), nperms)
@@ -31,7 +59,7 @@ CCA.permute.both=
                 nnonzerous[j] <- sum(out$u != 0)
                 nnonzerovs[j] <- sum(out$v != 0)
                 if (mean(out$u == 0) != 1 && mean(out$v == 0) != 1) {
-                    ccs[j] <- cor(x %*% out$u, z %*% out$v)
+                    ccs[j] <- cor(as.matrix(x %*% out$u), as.matrix(z %*% out$v))
                 } else {
                     ccs[j] <- 0
                 }
@@ -40,7 +68,7 @@ CCA.permute.both=
             nnonzerous_perm <- sum(out$u != 0)
             nnonzerovs_perm <- sum(out$v != 0)
             if (mean(out$u == 0) != 1 && mean(out$v == 0) != 1) {
-                ccperm <- cor(x[sampx, ] %*% out$u, z[sampz, ] %*% out$v)
+                ccperm <- cor(as.matrix(x[sampx, ] %*% out$u), as.matrix(z[sampz, ] %*% out$v))
             } else {
                 ccperm <- 0
             }

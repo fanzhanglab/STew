@@ -31,12 +31,36 @@ cca_main <- function(x, z, obj = NULL, penaltyx=NULL, penaltyz=NULL, K=1, niter=
     if(sum(is.na(x))+sum(is.na(z)) > 0) stop("Cannot have NAs in x or z")
     if(nrow(x)!=nrow(z)) stop("x and z must have same number of rows")
     if(standardize){
-        sdx <- apply(x,2,sd)
-        sdz <- apply(z,2,sd)
+        sdx <- sqrt(colMeans(STew$exp_adj_matrix ^ 2) - colMeans(STew$exp_adj_matrix) ^ 2)
+        sdz <- sqrt(colMeans(STew$adj_matrix ^ 2) - colMeans(STew$adj_matrix) ^ 2)
         if(min(sdx)==0) stop("Cannot standardize because some of the columns of x have std. dev. 0")
         if(min(sdz)==0) stop("Cannot standardize because some of the columns of z have std. dev. 0")
-        x <- scale(x,TRUE,sdx)
-        z <- scale(z,TRUE,sdz)
+        x@x <- x@x / rep.int(colSums(x), diff(x@p))
+        # Scaling for dense matrix 'z' in parallel
+
+
+
+        nsplit = 10
+
+        # Splitting the matrix
+        split_indices = cut(1:nrow(z), nsplit, labels = FALSE)
+
+        # Convert each part to a sparse matrix
+        sparseMxList = lapply(1:nsplit, function(i) {
+          sub_matrix = z[split_indices == i, ]
+          Matrix(as.matrix(sub_matrix), sparse = TRUE)
+        })
+
+        # Combine the list of sparse matrices into one
+        sparse.M = Reduce(function(x, y) rbind(x, y), sparseMxList)
+
+        # Set row and column names
+        rownames(sparse.M) <- rownames(z)
+        colnames(sparse.M) <- rownames(z)
+
+        z <- sparse.M
+
+        z@x <- z@x / rep.int(colSums(z), diff(z@p))
     }
     if(!is.null(outcome)){
         pheno.out <- CCAPhenotypeZeroSome(x,z,y,qt=.8, cens=cens, outcome=outcome)
@@ -74,7 +98,7 @@ cca_main <- function(x, z, obj = NULL, penaltyx=NULL, penaltyz=NULL, K=1, niter=
     out$v.init <- v
     out$cors <- numeric(K)
     for(k in 1:K){
-        if(sum(out$u[,k]!=0)>0 && sum(out$v[,k]!=0)>0) out$cors[k] <- cor(x%*%out$u[,k],z%*%out$v[,k])
+        if(sum(out$u[,k]!=0)>0 && sum(out$v[,k]!=0)>0) out$cors[k] <- cor(as.matrix(x %*% out$u[, k]), as.matrix(z %*% out$v[, k]))
     }
     class(out) <- "cca_main"
     if(!is.null(obj)) {
