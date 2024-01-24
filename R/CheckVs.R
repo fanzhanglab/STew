@@ -1,6 +1,13 @@
+#' CheckVS
+#'
+#' @param v v
+#' @param x x
+#' @param z z
+#' @param K K
+#'
+#' @import RSpectra
 CheckVs <- function(v,x,z,K){ # If v is NULL, then get v as appropriate.
   ##print(list(v=v, x = x, z = z, K = K))
-  library(RSpectra)
   if(!is.null(v) && !is.matrix(v)) v <- matrix(v,nrow=ncol(z))
   if(!is.null(v) && ncol(v)<K) v <- NULL
   if(!is.null(v) && ncol(v)>K) v <- matrix(v[,1:K],ncol=K)

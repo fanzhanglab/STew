@@ -5,7 +5,7 @@ Author: Nanxi Guo, Juan Vargas, Douglas Fritz, Revanth Krishna, Fan Zhang (Unive
 Maintainer: Revanth Krishna <revanth.krishna@cuanschutz.edu>
 Correspondance: Fan Zhang <fan.3.zhang@cuanschutz.edu>
 Description: Uncover spatially informed shared variations underlying single-cell spatial transcriptomics with STew.
-Date: 2023-08-01
+Date: 2024-01-24
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -16,11 +16,13 @@ Depends:
     R (>= 4.0),
     ggplot2 (>= 3.4),
     tidyverse,
+    dplyr
 Remotes:
     JEFworks-Lab/MERINGUE,
     satijalab/Seurat
 Imports:
     loe (>= 1.1),
+    RSpectra,
     Matrix (>= 1.5.4),
     ggpubr (>= 0.6.0),
     future,
@@ -31,16 +33,9 @@ Imports:
     sctransform,
     MERINGUE,
     Seurat,
-    viridis,
     data.table,
     parallel,
     MASS,
-    princurve,
-    lme4,
-    lmtest,
-    pscl,
-    vcd,
-    ComplexHeatmap,
     gridExtra,
     ggrepel,
     stats,
@@ -48,7 +43,14 @@ Imports:
     parameters
 Suggests: knitr,
     rmarkdown,
-    ggpointdensity
+    ggpointdensity,
+    princurve,
+    lme4,
+    lmtest,
+    pscl,
+    vcd,
+    ComplexHeatmap,
+    viridis
 LazyData: true
 LazyDataCompression: xz
 VignetteBuilder: knitr

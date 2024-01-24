@@ -22,21 +22,14 @@
 #' @export
 #' @import future
 #' future.apply
-#' princurve
 #' tidyverse
 #' data.table
 #' parallel
 #' MASS
-#' lme4
-#' lmtest
 #' future
-#' pscl
-#' vcd
-#' ComplexHeatmap
 #' ggpubr
 #' gridExtra
 #' ggrepel
-#' viridis
 #' parameters
 multimodel_count_regression <- function(outcomes_interest,  # a vector of genes of interest
                                         models,          # a vector of models to use (e.g., "GLM", "ZeroInflated", etc.)
