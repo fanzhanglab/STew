@@ -31,8 +31,8 @@ cca_main <- function(x, z, obj = NULL, penaltyx=NULL, penaltyz=NULL, K=1, niter=
     if(sum(is.na(x))+sum(is.na(z)) > 0) stop("Cannot have NAs in x or z")
     if(nrow(x)!=nrow(z)) stop("x and z must have same number of rows")
     if(standardize){
-        sdx <- sqrt(colMeans(STew$exp_adj_matrix ^ 2) - colMeans(STew$exp_adj_matrix) ^ 2)
-        sdz <- sqrt(colMeans(STew$adj_matrix ^ 2) - colMeans(STew$adj_matrix) ^ 2)
+        sdx <- sqrt(colMeans(obj$exp_adj_matrix ^ 2) - colMeans(obj$exp_adj_matrix) ^ 2)
+        sdz <- sqrt(colMeans(obj$adj_matrix ^ 2) - colMeans(obj$adj_matrix) ^ 2)
         if(min(sdx)==0) stop("Cannot standardize because some of the columns of x have std. dev. 0")
         if(min(sdz)==0) stop("Cannot standardize because some of the columns of z have std. dev. 0")
         x@x <- x@x / rep.int(colSums(x), diff(x@p))
