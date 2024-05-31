@@ -123,7 +123,7 @@ saveRDS(STew, file="STew_10x_human_dlpfc_no.rds")
 
 ## Citations
 
-Guo, N., Vargas, J., Fritz, D., Krishna, R., Zhang, F, Uncover spatially informed variations for single-cell spatial transcriptomics with STew, Bioinformatics Advances, https://doi.org/10.1093/bioadv/vbae064, 2024
+Guo, N., Vargas, J., Reynoso, S., Fritz, D., Krishna, R., Wang, C., Zhang, F., Uncover spatially informed variations for single-cell spatial transcriptomics with STew, Bioinformatics Advances, https://doi.org/10.1093/bioadv/vbae064, 2024
 
 <br/>
 

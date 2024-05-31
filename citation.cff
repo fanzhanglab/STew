@@ -5,10 +5,14 @@ authors:
     given-names: N.
   - family-names: Vargas
     given-names: J.
+  - family-names: Reynoso
+    given-names: S.
   - family-names: Fritz
     given-names: D.
   - family-names: Krishna
     given-names: R.
+  - family-names: Wang
+    given-names: C.
   - family-names: Zhang
     given-names: F.
 title: "Uncover spatially informed variations for single-cell spatial transcriptomics with STew"
