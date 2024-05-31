@@ -9,7 +9,7 @@ Date: 2024-01-24
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 URL: https://github.com/fanzhanglab/STew
 BugReports: https://github.com/fanzhanglab/STew/issues
 Depends: 
@@ -23,7 +23,6 @@ Remotes:
     JEFworks-Lab/MERINGUE,
     satijalab/Seurat
 Imports:
-    loe (>= 1.1),
     Matrix (>= 1.5.4),
     ggpubr (>= 0.6.0),
     future,

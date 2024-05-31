@@ -1,0 +1,18 @@
+cff-version: 1.0.3
+message: "If you use this software, please cite it using the following reference."
+authors:
+  - family-names: Guo
+    given-names: N.
+  - family-names: Vargas
+    given-names: J.
+  - family-names: Fritz
+    given-names: D.
+  - family-names: Krishna
+    given-names: R.
+  - family-names: Zhang
+    given-names: F.
+title: "Uncover spatially informed variations for single-cell spatial transcriptomics with STew"
+date-released: 2024
+url: "https://doi.org/10.1093/bioadv/vbae064"
+journal: "Bioinformatics Advances"
+doi: "10.1093/bioadv/vbae064"
