@@ -46,7 +46,6 @@ remotes::install_github("fanzhanglab/STew")
 
 - R (\>= 4.2)
 - MERINGUE (\>= 1.0)
-- loe (\>= 1.1)
 - Matrix (\>= 1.5.4)
 - ggplot2 (\>= 3.4.2)
 - ggpubr (\>= 0.6.0)
